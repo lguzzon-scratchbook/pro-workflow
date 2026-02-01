@@ -272,6 +272,51 @@ cp -r /tmp/pw/commands/* ~/.claude/commands/
 
 ---
 
+## Hooks
+
+Pro-workflow includes automated hooks to enforce the patterns.
+
+### PreToolUse Hooks
+
+| Trigger | Action |
+|---------|--------|
+| Edit/Write | Track edit count, remind at 5/10 edits |
+| git commit | Remind to run quality gates |
+| git push | Remind about /wrap-up |
+
+### PostToolUse Hooks
+
+| Trigger | Action |
+|---------|--------|
+| Code edit (.ts/.js/.py/.go) | Check for console.log, TODOs, secrets |
+| Test commands | Suggest [LEARN] from failures |
+
+### Session Hooks
+
+| Hook | Action |
+|------|--------|
+| SessionStart | Load LEARNED patterns, show worktree count |
+| Stop | Periodic wrap-up/compact reminders |
+| SessionEnd | Check uncommitted changes, prompt for learnings |
+
+### Install Hooks
+
+```bash
+# Copy hooks to your settings
+cp ~/skills/pro-workflow/hooks/hooks.json ~/.claude/settings.local.json
+
+# Or merge with existing settings
+```
+
+### Hook Philosophy
+
+Based on Twitter thread insights:
+- **Non-blocking** - Hooks remind, don't block (except dangerous ops)
+- **Checkpoint-based** - Quality gates at intervals, not every edit
+- **Learning-focused** - Always prompt for pattern capture
+
+---
+
 ## Commands
 
 | Command | Purpose |

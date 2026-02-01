@@ -58,6 +58,30 @@ cp -r /tmp/pw/commands/* ~/.claude/commands/
 | `/learn-rule` | Extract correction to memory |
 | `/parallel` | Worktree setup guide |
 
+## Hooks
+
+Automated enforcement of workflow patterns.
+
+| Hook | When | What |
+|------|------|------|
+| PreToolUse | Before edits | Track edit count, quality gate reminders |
+| PreToolUse | Before git commit/push | Remind about quality gates, wrap-up |
+| PostToolUse | After code edits | Check for console.log, TODOs, secrets |
+| PostToolUse | After tests | Suggest [LEARN] from failures |
+| SessionStart | New session | Load LEARNED patterns |
+| Stop | Each response | Periodic wrap-up reminders |
+| SessionEnd | Session close | Check uncommitted changes |
+
+### Install Hooks
+
+```bash
+# Full setup with hooks
+git clone https://github.com/rohitg00/pro-workflow.git /tmp/pw
+cp -r /tmp/pw/hooks/* ~/.claude/
+cp -r /tmp/pw/scripts ~/.claude/scripts/pro-workflow/
+cp -r /tmp/pw/commands/* ~/.claude/commands/
+```
+
 ## Structure
 
 ```
@@ -65,6 +89,14 @@ pro-workflow/
 ├── SKILL.md              # Main skill
 ├── README.md             # This file
 ├── config.json           # Options
+├── hooks/
+│   └── hooks.json        # Hook definitions
+├── scripts/
+│   ├── quality-gate.js   # Edit tracking
+│   ├── post-edit-check.js # Issue detection
+│   ├── session-check.js  # Wrap-up reminders
+│   ├── session-start.js  # Load LEARNED
+│   └── session-end.js    # Capture learnings
 ├── commands/
 │   ├── wrap-up.md        # Session wrap-up
 │   ├── learn-rule.md     # Correction capture
