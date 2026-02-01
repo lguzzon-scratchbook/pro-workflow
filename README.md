@@ -123,7 +123,7 @@ pro-workflow/
 ## Install via SkillKit
 
 ```bash
-skillkit install pro-workflow
+$ npx skillkit install pro-workflow
 ```
 
 ## Philosophy
