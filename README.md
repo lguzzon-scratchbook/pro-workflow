@@ -21,11 +21,34 @@ This skill optimizes for that ratio. Every pattern reduces correction cycles.
 | **Context Discipline** | Manage your 200k token budget |
 | **Learning Log** | Auto-document insights |
 
-## Quick Start
+## Installation
 
-### Minimal Setup
+### One-Click Plugin Install (Recommended)
 
-Add to your CLAUDE.md:
+```bash
+# Add marketplace
+claude plugin marketplace add https://github.com/rohitg00/pro-workflow
+
+# Install plugin
+claude plugin install pro-workflow
+```
+
+### Or load directly
+
+```bash
+claude --plugin-dir /path/to/pro-workflow
+```
+
+### Manual Setup
+
+```bash
+git clone https://github.com/rohitg00/pro-workflow.git /tmp/pw
+cp -r /tmp/pw/templates/split-claude-md/* ./.claude/
+cp -r /tmp/pw/commands/* ~/.claude/commands/
+cp -r /tmp/pw/hooks/* ~/.claude/
+```
+
+### Minimal (Just add to CLAUDE.md)
 
 ```markdown
 ## Pro Workflow
@@ -42,21 +65,15 @@ After edits: lint, typecheck, test.
 ### LEARNED
 ```
 
-### Full Setup
-
-```bash
-git clone https://github.com/rohitg00/pro-workflow.git /tmp/pw
-cp -r /tmp/pw/templates/split-claude-md/* ./.claude/
-cp -r /tmp/pw/commands/* ~/.claude/commands/
-```
-
 ## Commands
+
+After plugin install, commands are namespaced:
 
 | Command | Purpose |
 |---------|---------|
-| `/wrap-up` | End-of-session checklist |
-| `/learn-rule` | Extract correction to memory |
-| `/parallel` | Worktree setup guide |
+| `/pro-workflow:wrap-up` | End-of-session checklist |
+| `/pro-workflow:learn-rule` | Extract correction to memory |
+| `/pro-workflow:parallel` | Worktree setup guide |
 
 ## Hooks
 
@@ -99,31 +116,38 @@ cp -r /tmp/pw/commands/* ~/.claude/commands/
 
 ```
 pro-workflow/
-├── SKILL.md                  # Main skill
-├── README.md
-├── config.json
-├── mcp-config.example.json   # MCP setup
+├── .claude-plugin/
+│   ├── plugin.json           # Plugin manifest
+│   ├── marketplace.json      # Marketplace config
+│   └── README.md
+├── skills/
+│   └── pro-workflow/
+│       └── SKILL.md          # Main skill
+├── agents/
+│   ├── planner.md
+│   └── reviewer.md
+├── commands/
+│   ├── wrap-up.md
+│   ├── learn-rule.md
+│   └── parallel.md
 ├── hooks/
 │   └── hooks.json
 ├── scripts/                  # Hook scripts
-├── commands/                 # Slash commands
-├── contexts/                 # Mode switching
+├── contexts/
 │   ├── dev.md
 │   ├── review.md
 │   └── research.md
-├── agents/                   # Subagents
-│   ├── planner.md
-│   └── reviewer.md
 ├── rules/
-│   └── core-rules.md         # Universal rules
-└── templates/
-    └── split-claude-md/
+│   └── core-rules.md
+├── templates/
+│   └── split-claude-md/
+└── README.md
 ```
 
-## Install via SkillKit
+## Also Available via SkillKit
 
 ```bash
-$ npx skillkit install pro-workflow
+npx skillkit install pro-workflow
 ```
 
 ## Philosophy
