@@ -90,6 +90,42 @@
         ],
         "description": "Prompt for learnings and update LEARNED.md"
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/prompt-submit.js\""
+          }
+        ],
+        "description": "Track prompts and detect correction patterns"
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/pre-compact.js\""
+          }
+        ],
+        "description": "Save context state before compaction"
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);if(i.type==='PermissionRequest'){console.error('[ProWorkflow] Permission requested: '+i.tool)}console.log(d)})\""
+          }
+        ],
+        "description": "Log permission requests"
+      }
     ]
   }
 }
