@@ -6,13 +6,20 @@ This plugin provides battle-tested Claude Code workflows.
 
 ```bash
 # Add marketplace
-claude plugin marketplace add https://github.com/rohitg00/pro-workflow
+/plugin marketplace add rohitg00/pro-workflow
 
 # Install plugin
-claude plugin install pro-workflow
+/plugin install pro-workflow@pro-workflow
 ```
 
-Or install directly:
+Or via CLI:
+
+```bash
+claude plugin marketplace add rohitg00/pro-workflow
+claude plugin install pro-workflow@pro-workflow
+```
+
+Or load directly:
 
 ```bash
 claude --plugin-dir /path/to/pro-workflow

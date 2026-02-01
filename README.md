@@ -27,10 +27,17 @@ This skill optimizes for that ratio. Every pattern reduces correction cycles.
 
 ```bash
 # Add marketplace
-claude plugin marketplace add https://github.com/rohitg00/pro-workflow
+/plugin marketplace add rohitg00/pro-workflow
 
 # Install plugin
-claude plugin install pro-workflow
+/plugin install pro-workflow@pro-workflow
+```
+
+Or via CLI:
+
+```bash
+claude plugin marketplace add rohitg00/pro-workflow
+claude plugin install pro-workflow@pro-workflow
 ```
 
 ### Or load directly
