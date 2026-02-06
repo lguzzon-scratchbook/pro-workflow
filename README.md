@@ -112,13 +112,13 @@ After plugin install, commands are namespaced:
 | `/pro-workflow:wrap-up` | End-of-session checklist |
 | `/pro-workflow:learn-rule` | Extract correction to memory (file-based) |
 | `/pro-workflow:parallel` | Worktree setup guide |
-| `/pro-workflow:learn` | **NEW** Claude Code best practices & save learnings |
-| `/pro-workflow:search` | **NEW** Search learnings by keyword |
-| `/pro-workflow:list` | **NEW** List all stored learnings |
+| `/pro-workflow:learn` |Claude Code best practices & save learnings |
+| `/pro-workflow:search` |Search learnings by keyword |
+| `/pro-workflow:list` |List all stored learnings |
 | `/pro-workflow:commit` | Smart commit with quality gates and code review |
 | `/pro-workflow:insights` | Session analytics, learning patterns, and correction heatmap |
-| `/pro-workflow:replay` | **NEW** Surface past learnings for current task |
-| `/pro-workflow:handoff` | **NEW** Generate session handoff document for next session |
+| `/pro-workflow:replay` |Surface past learnings for current task |
+| `/pro-workflow:handoff` |Generate session handoff document for next session |
 
 ## Database Features
 
@@ -162,7 +162,7 @@ Automated enforcement of workflow patterns.
 | PreToolUse | Before git commit/push | Remind about quality gates, wrap-up |
 | PostToolUse | After code edits | Check for console.log, TODOs, secrets |
 | PostToolUse | After tests | Suggest [LEARN] from failures |
-| UserPromptSubmit | Each prompt | **NEW** Drift detection — warns when straying from original intent |
+| UserPromptSubmit | Each prompt |Drift detection — warns when straying from original intent |
 | SessionStart | New session | Load learnings from database |
 | Stop | Each response | Periodic wrap-up reminders |
 | SessionEnd | Session close | Save session stats to database |
@@ -189,7 +189,7 @@ cp -r /tmp/pw/commands/* ~/.claude/commands/
 |-------|---------|
 | planner | Break down complex tasks |
 | reviewer | Code review, security audit |
-| scout | **NEW** Confidence-gated exploration before implementation |
+| scout |Confidence-gated exploration before implementation |
 
 ### Agent Teams (Experimental)
 
