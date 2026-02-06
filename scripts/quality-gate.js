@@ -26,11 +26,37 @@ function getStore() {
   return null;
 }
 
+function getAdaptiveThreshold(store) {
+  if (!store) return { first: 5, second: 10, repeat: 10 };
+
+  try {
+    const sessions = store.getRecentSessions(10);
+    if (sessions.length < 3) return { first: 5, second: 10, repeat: 10 };
+
+    const totalEdits = sessions.reduce((s, sess) => s + sess.edit_count, 0);
+    const totalCorrections = sessions.reduce((s, sess) => s + sess.corrections_count, 0);
+    const correctionRate = totalEdits > 0 ? totalCorrections / totalEdits : 0;
+
+    if (correctionRate > 0.25) {
+      return { first: 3, second: 6, repeat: 6 };
+    } else if (correctionRate > 0.15) {
+      return { first: 5, second: 10, repeat: 10 };
+    } else if (correctionRate > 0.05) {
+      return { first: 8, second: 15, repeat: 15 };
+    } else {
+      return { first: 10, second: 20, repeat: 20 };
+    }
+  } catch (e) {
+    return { first: 5, second: 10, repeat: 10 };
+  }
+}
+
 async function main() {
   const sessionId = process.env.CLAUDE_SESSION_ID || String(process.ppid) || 'default';
 
   let count = 1;
   let store = null;
+  let threshold = { first: 5, second: 10, repeat: 10 };
 
   try {
     store = getStore();
@@ -40,6 +66,7 @@ async function main() {
 
   if (store) {
     try {
+      threshold = getAdaptiveThreshold(store);
       const session = store.getSession(sessionId);
       if (session) {
         store.updateSessionCounts(sessionId, 1, 0, 0);
@@ -67,18 +94,24 @@ async function main() {
     fs.writeFileSync(editCountFile, String(count));
   }
 
-  if (count === 5) {
-    log('[ProWorkflow] 5 edits reached - good checkpoint for review');
+  if (count === threshold.first) {
+    log(`[ProWorkflow] ${count} edits — checkpoint for review`);
     log('[ProWorkflow] Run: git diff --stat | to see changes');
+    if (threshold.first < 5) {
+      log('[ProWorkflow] (adaptive: tighter gates due to recent correction rate)');
+    }
   }
 
-  if (count === 10) {
-    log('[ProWorkflow] 10 edits - strongly consider quality gates:');
+  if (count === threshold.second) {
+    log(`[ProWorkflow] ${count} edits — run quality gates:`);
     log('[ProWorkflow]   npm run lint && npm run typecheck && npm test --changed');
+    if (threshold.second < 10) {
+      log('[ProWorkflow] (adaptive: correction history suggests more frequent checks)');
+    }
   }
 
-  if (count > 10 && count % 10 === 0) {
-    log(`[ProWorkflow] ${count} edits - run quality gates before continuing`);
+  if (count > threshold.second && count % threshold.repeat === 0) {
+    log(`[ProWorkflow] ${count} edits — quality gates due`);
   }
 
   process.exit(0);
