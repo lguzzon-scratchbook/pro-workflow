@@ -101,6 +101,16 @@
           }
         ],
         "description": "Track prompts and detect correction patterns"
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/drift-detector.js\""
+          }
+        ],
+        "description": "Detect task drift and remind about original intent"
       }
     ],
     "PreCompact": [

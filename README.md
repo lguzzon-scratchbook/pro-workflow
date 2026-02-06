@@ -5,21 +5,22 @@
 
 Battle-tested Claude Code workflows from power users. Self-correcting memory, parallel worktrees, wrap-up rituals, and the 80/20 AI coding ratio.
 
-**v1.1.0: Agent teams, custom subagents, adaptive thinking, smart commit, and session insights!**
+**v1.2.0: Scout agent, /replay, /handoff, drift detection, adaptive quality gates, and correction heatmap!**
 
 **If this helps your workflow, please give it a star!**
 
-## What's New in v1.1.0
+## What's New in v1.2.0
 
-- **`/commit`**: Smart commit with quality gates, code review, and learning capture
-- **`/insights`**: Session analytics, learning patterns, correction trends, and productivity metrics
-- **Agent Teams**: Coordinate multiple Claude Code sessions with shared task lists and inter-agent messaging
-- **Custom Subagents**: Create project or user-level subagents with custom tools, memory, and hooks
-- **Adaptive Thinking**: Opus 4.6 calibrates reasoning depth per task automatically
-- **Context Compaction**: Keep long-running agents alive with auto-compaction and PreCompact hooks
-- **Updated Model Selection**: Haiku 4.5, Sonnet 4.5, Opus 4.6 model recommendations
-- **Persistent Storage**: Learnings survive reboots in `~/.pro-workflow/data.db`
-- **Full-Text Search**: Find past learnings instantly with BM25-powered FTS5
+- **Scout Agent**: Confidence-gated exploration — scores readiness (0-100) before implementation, auto-gathers missing context
+- **`/replay`**: Surface relevant past learnings before starting a task — your SQLite-powered coding muscle memory
+- **`/handoff`**: Generate structured session handoff documents for seamless continuation in the next session
+- **Drift Detection**: Hook that tracks your original intent and warns when you've strayed from the goal
+- **Adaptive Quality Gates**: Gates adjust based on your correction history — high correction rate = tighter gates, low rate = relaxed gates
+- **Correction Heatmap**: `/insights heatmap` shows which categories and projects get corrected most, with hot/cold learning analysis
+
+### Previous: v1.1.0
+
+- Smart `/commit` with quality gates, `/insights` analytics, agent teams, persistent SQLite storage with FTS5
 
 ## The Core Idea
 
@@ -111,11 +112,13 @@ After plugin install, commands are namespaced:
 | `/pro-workflow:wrap-up` | End-of-session checklist |
 | `/pro-workflow:learn-rule` | Extract correction to memory (file-based) |
 | `/pro-workflow:parallel` | Worktree setup guide |
-| `/pro-workflow:learn` | **NEW** Claude Code best practices & save learnings |
-| `/pro-workflow:search` | **NEW** Search learnings by keyword |
-| `/pro-workflow:list` | **NEW** List all stored learnings |
-| `/pro-workflow:commit` | **NEW** Smart commit with quality gates and code review |
-| `/pro-workflow:insights` | **NEW** Session analytics and learning patterns |
+| `/pro-workflow:learn` |Claude Code best practices & save learnings |
+| `/pro-workflow:search` |Search learnings by keyword |
+| `/pro-workflow:list` |List all stored learnings |
+| `/pro-workflow:commit` | Smart commit with quality gates and code review |
+| `/pro-workflow:insights` | Session analytics, learning patterns, and correction heatmap |
+| `/pro-workflow:replay` |Surface past learnings for current task |
+| `/pro-workflow:handoff` |Generate session handoff document for next session |
 
 ## Database Features
 
@@ -159,6 +162,7 @@ Automated enforcement of workflow patterns.
 | PreToolUse | Before git commit/push | Remind about quality gates, wrap-up |
 | PostToolUse | After code edits | Check for console.log, TODOs, secrets |
 | PostToolUse | After tests | Suggest [LEARN] from failures |
+| UserPromptSubmit | Each prompt |Drift detection — warns when straying from original intent |
 | SessionStart | New session | Load learnings from database |
 | Stop | Each response | Periodic wrap-up reminders |
 | SessionEnd | Session close | Save session stats to database |
@@ -185,6 +189,7 @@ cp -r /tmp/pw/commands/* ~/.claude/commands/
 |-------|---------|
 | planner | Break down complex tasks |
 | reviewer | Code review, security audit |
+| scout |Confidence-gated exploration before implementation |
 
 ### Agent Teams (Experimental)
 
@@ -224,7 +229,8 @@ pro-workflow/
 │       └── SKILL.md          # Main skill
 ├── agents/
 │   ├── planner.md            # Planner agent
-│   └── reviewer.md           # Reviewer agent
+│   ├── reviewer.md           # Reviewer agent
+│   └── scout.md              # Confidence-gated scout agent
 ├── commands/
 │   ├── wrap-up.md
 │   ├── learn-rule.md
@@ -233,7 +239,9 @@ pro-workflow/
 │   ├── search.md
 │   ├── list.md
 │   ├── commit.md
-│   └── insights.md
+│   ├── insights.md
+│   ├── replay.md             # Surface past learnings
+│   └── handoff.md            # Session handoff document
 ├── hooks/
 │   └── hooks.json # Hooks file
 ├── scripts/                  # Hook scripts
